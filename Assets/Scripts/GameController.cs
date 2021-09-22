@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -10,17 +11,25 @@ public class GameController : MonoBehaviour
     public List<Enemy> Enemies;
     private Bird _shotBird;
     public BoxCollider2D TapCollider;
+    Scene m_Scene;
+    string sceneName;
+    
 
     private bool _isGameEnded = false;
 
     // Start is called before the first frame update
     void Start()
     {
+
+       
         for (int i = 0; i < Birds.Count; i++)
         {
            Birds[i].OnBirdDestroyed += ChangeBird;
            Birds[i].OnBirdShot += AssignTrail;
+           
+            
         }
+
 
         for (int i = 0; i < Enemies.Count; i++)
         {
@@ -30,6 +39,7 @@ public class GameController : MonoBehaviour
         TapCollider.enabled = false;
         SlingShooter.InitiateBird(Birds[0]);
         _shotBird = Birds[0];
+        
     }
 
 
@@ -52,7 +62,11 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            this.enabled = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex );
+        }
     }
 
     public void ChangeBird()
@@ -82,7 +96,19 @@ public class GameController : MonoBehaviour
         if (Enemies.Count == 0)
         {
             _isGameEnded = true;
-        }
+
+            if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Level2"))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+         
+          }
+        
+
     }
 
 
