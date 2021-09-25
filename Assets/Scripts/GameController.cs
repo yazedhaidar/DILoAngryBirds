@@ -71,6 +71,12 @@ public class GameController : MonoBehaviour
 
     public void ChangeBird()
     {
+
+        int countbird = 0;
+        countbird += 1;
+        _shotBird = Birds[countbird];
+        
+
         if (_isGameEnded)
         {
             return;
